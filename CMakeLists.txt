@@ -86,7 +86,7 @@ if((DEFINED XBOX_CONSOLE_TARGET) AND (NOT (XBOX_CONSOLE_TARGET STREQUAL "durango
   set(BUILD_DX11 OFF)
 endif()
 
-include(GNUInstallDirs)
+# include(GNUInstallDirs)
 include(build/CompilerAndLinker.cmake)
 
 if((DEFINED DIRECTX_ARCH) AND (DIRECTX_ARCH STREQUAL "arm64ec"))
@@ -381,11 +381,11 @@ if(NOT MINGW)
 endif()
 
 if(MINGW OR (NOT WIN32))
-    find_package(directxmath CONFIG REQUIRED)
-    target_link_libraries(${PROJECT_NAME} PUBLIC Microsoft::DirectXMath)
+    # find_package(directxmath CONFIG REQUIRED)
+    target_link_libraries(${PROJECT_NAME} PUBLIC DirectXMath)
 
-    find_package(directx-headers CONFIG REQUIRED)
-    target_link_libraries(${PROJECT_NAME} PUBLIC Microsoft::DirectX-Headers)
+    # find_package(directx-headers CONFIG REQUIRED)
+    target_link_libraries(${PROJECT_NAME} PUBLIC DirectX-Headers)
     target_compile_definitions(${PROJECT_NAME} PUBLIC USING_DIRECTX_HEADERS)
 else()
     find_package(directxmath CONFIG QUIET)
@@ -408,348 +408,348 @@ if(directx-headers_FOUND)
     endif()
 endif()
 
-#--- Package
-include(CMakePackageConfigHelpers)
+# #--- Package
+# include(CMakePackageConfigHelpers)
 
-string(TOLOWER ${PROJECT_NAME} PACKAGE_NAME)
+# string(TOLOWER ${PROJECT_NAME} PACKAGE_NAME)
 
-write_basic_package_version_file(
-  ${PACKAGE_NAME}-config-version.cmake
-  VERSION ${DIRECTXTEX_VERSION}
-  COMPATIBILITY AnyNewerVersion)
+# write_basic_package_version_file(
+#   ${PACKAGE_NAME}-config-version.cmake
+#   VERSION ${DIRECTXTEX_VERSION}
+#   COMPATIBILITY AnyNewerVersion)
 
-install(TARGETS ${PROJECT_NAME}
-  EXPORT ${PROJECT_NAME}-targets
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+# install(TARGETS ${PROJECT_NAME}
+#   EXPORT ${PROJECT_NAME}-targets
+#   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}-config.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}-config.cmake
-  INSTALL_DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PACKAGE_NAME})
+# configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}-config.cmake.in
+#   ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}-config.cmake
+#   INSTALL_DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PACKAGE_NAME})
 
-install(EXPORT ${PROJECT_NAME}-targets
-  FILE ${PROJECT_NAME}-targets.cmake
-  NAMESPACE Microsoft::
-  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PACKAGE_NAME})
+# install(EXPORT ${PROJECT_NAME}-targets
+#   FILE ${PROJECT_NAME}-targets.cmake
+#   NAMESPACE Microsoft::
+#   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PACKAGE_NAME})
 
-install(FILES ${LIBRARY_HEADERS}
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+# install(FILES ${LIBRARY_HEADERS}
+#   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}-config.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}-config-version.cmake
-  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PACKAGE_NAME})
+# install(FILES
+#     ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}-config.cmake
+#     ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}-config-version.cmake
+#   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PACKAGE_NAME})
 
-# Create pkg-config file
-# from: https://github.com/jtojnar/cmake-snips#concatenating-paths-when-building-pkg-config-files
-cmake_path(APPEND DIRECTXTEX_INCLUDEDIR_FOR_PKG_CONFIG "\${prefix}" "${CMAKE_INSTALL_INCLUDEDIR}")
-cmake_path(APPEND DIRECTXTEX_LIBDIR_FOR_PKG_CONFIG "\${prefix}"     "${CMAKE_INSTALL_LIBDIR}")
+# # Create pkg-config file
+# # from: https://github.com/jtojnar/cmake-snips#concatenating-paths-when-building-pkg-config-files
+# cmake_path(APPEND DIRECTXTEX_INCLUDEDIR_FOR_PKG_CONFIG "\${prefix}" "${CMAKE_INSTALL_INCLUDEDIR}")
+# cmake_path(APPEND DIRECTXTEX_LIBDIR_FOR_PKG_CONFIG "\${prefix}"     "${CMAKE_INSTALL_LIBDIR}")
 
-set(DIRECTXTEX_DEP_L "")
-if(ENABLE_OPENEXR_SUPPORT)
-  list(APPEND DIRECTXTEX_DEP_L "OpenEXR")
-endif()
-if(directxmath_FOUND)
-  list(APPEND DIRECTXTEX_DEP_L "DirectXMath")
-endif()
-if(directx-headers_FOUND)
-  list(APPEND DIRECTXTEX_DEP_L "DirectX-Headers")
-endif()
-if(ENABLE_LIBJPEG_SUPPORT AND JPEG_FOUND)
-  list(APPEND DIRECTXTEX_DEP_L "libjpeg")
-endif()
-if(ENABLE_LIBPNG_SUPPORT AND PNG_FOUND)
-  list(APPEND DIRECTXTEX_DEP_L "libpng")
-endif()
+# set(DIRECTXTEX_DEP_L "")
+# if(ENABLE_OPENEXR_SUPPORT)
+#   list(APPEND DIRECTXTEX_DEP_L "OpenEXR")
+# endif()
+# if(directxmath_FOUND)
+#   list(APPEND DIRECTXTEX_DEP_L "DirectXMath")
+# endif()
+# if(directx-headers_FOUND)
+#   list(APPEND DIRECTXTEX_DEP_L "DirectX-Headers")
+# endif()
+# if(ENABLE_LIBJPEG_SUPPORT AND JPEG_FOUND)
+#   list(APPEND DIRECTXTEX_DEP_L "libjpeg")
+# endif()
+# if(ENABLE_LIBPNG_SUPPORT AND PNG_FOUND)
+#   list(APPEND DIRECTXTEX_DEP_L "libpng")
+# endif()
 
-list(LENGTH DIRECTXTEX_DEP_L DEP_L)
-if(DEP_L)
-  string(REPLACE ";" ", " DIRECTXTEX_DEP " ${DIRECTXTEX_DEP_L}")
-endif()
+# list(LENGTH DIRECTXTEX_DEP_L DEP_L)
+# if(DEP_L)
+#   string(REPLACE ";" ", " DIRECTXTEX_DEP " ${DIRECTXTEX_DEP_L}")
+# endif()
 
-configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/build/DirectXTex.pc.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/DirectXTex.pc" @ONLY)
+# configure_file(
+#     "${CMAKE_CURRENT_SOURCE_DIR}/build/DirectXTex.pc.in"
+#     "${CMAKE_CURRENT_BINARY_DIR}/DirectXTex.pc" @ONLY)
 
-# Install the pkg-config file
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/DirectXTex.pc"
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+# # Install the pkg-config file
+# install(FILES "${CMAKE_CURRENT_BINARY_DIR}/DirectXTex.pc"
+#         DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 
-#--- Command-line tools
-set(TOOL_EXES "")
+# #--- Command-line tools
+# set(TOOL_EXES "")
 
-if(BUILD_TOOLS AND WIN32)
-  add_executable(texassemble
-    Texassemble/texassemble.cpp
-    Texassemble/texassemble.rc
-    Common/CmdLineHelpers.h
-    Common/settings.manifest
-    Texassemble/AnimatedGif.cpp)
-  target_compile_features(texassemble PRIVATE cxx_std_17)
-  target_link_libraries(texassemble PRIVATE ${PROJECT_NAME} ole32.lib version.lib)
-  source_group(texassemble REGULAR_EXPRESSION Texassemble/*.*)
-  list(APPEND TOOL_EXES texassemble)
-endif()
+# if(BUILD_TOOLS AND WIN32)
+#   add_executable(texassemble
+#     Texassemble/texassemble.cpp
+#     Texassemble/texassemble.rc
+#     Common/CmdLineHelpers.h
+#     Common/settings.manifest
+#     Texassemble/AnimatedGif.cpp)
+#   target_compile_features(texassemble PRIVATE cxx_std_17)
+#   target_link_libraries(texassemble PRIVATE ${PROJECT_NAME} ole32.lib version.lib)
+#   source_group(texassemble REGULAR_EXPRESSION Texassemble/*.*)
+#   list(APPEND TOOL_EXES texassemble)
+# endif()
 
-if(BUILD_TOOLS AND BUILD_DX11 AND WIN32)
-  add_executable(texconv
-    Texconv/texconv.cpp
-    Texconv/texconv.rc
-    Common/CmdLineHelpers.h
-    Common/settings.manifest
-    Texconv/ExtendedBMP.cpp
-    Texconv/PortablePixMap.cpp)
-  target_compile_features(texconv PRIVATE cxx_std_17)
-  target_link_libraries(texconv PRIVATE ${PROJECT_NAME} ole32.lib shell32.lib version.lib)
-  source_group(texconv REGULAR_EXPRESSION Texconv/*.*)
-  list(APPEND TOOL_EXES texconv)
-endif()
+# if(BUILD_TOOLS AND BUILD_DX11 AND WIN32)
+#   add_executable(texconv
+#     Texconv/texconv.cpp
+#     Texconv/texconv.rc
+#     Common/CmdLineHelpers.h
+#     Common/settings.manifest
+#     Texconv/ExtendedBMP.cpp
+#     Texconv/PortablePixMap.cpp)
+#   target_compile_features(texconv PRIVATE cxx_std_17)
+#   target_link_libraries(texconv PRIVATE ${PROJECT_NAME} ole32.lib shell32.lib version.lib)
+#   source_group(texconv REGULAR_EXPRESSION Texconv/*.*)
+#   list(APPEND TOOL_EXES texconv)
+# endif()
 
-if(BUILD_TOOLS AND WIN32)
-  add_executable(texdiag
-    Texdiag/texdiag.cpp
-    Texdiag/texdiag.rc
-    Common/CmdLineHelpers.h
-    Common/settings.manifest)
-  target_compile_features(texdiag PRIVATE cxx_std_17)
-  target_link_libraries(texdiag PRIVATE ${PROJECT_NAME} ole32.lib version.lib)
-  source_group(texdiag REGULAR_EXPRESSION Texdiag/*.*)
-  list(APPEND TOOL_EXES texdiag)
-endif()
+# if(BUILD_TOOLS AND WIN32)
+#   add_executable(texdiag
+#     Texdiag/texdiag.cpp
+#     Texdiag/texdiag.rc
+#     Common/CmdLineHelpers.h
+#     Common/settings.manifest)
+#   target_compile_features(texdiag PRIVATE cxx_std_17)
+#   target_link_libraries(texdiag PRIVATE ${PROJECT_NAME} ole32.lib version.lib)
+#   source_group(texdiag REGULAR_EXPRESSION Texdiag/*.*)
+#   list(APPEND TOOL_EXES texdiag)
+# endif()
 
-foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
-  target_include_directories(${t} PRIVATE Common)
-endforeach()
+# foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
+#   target_include_directories(${t} PRIVATE Common)
+# endforeach()
 
-if(BUILD_TOOLS AND WIN32)
-  if(ENABLE_OPENEXR_SUPPORT)
-    foreach(t IN LISTS TOOL_EXES)
-      target_include_directories(${t} PRIVATE Auxiliary)
-      target_link_libraries(${t} PRIVATE OpenEXR::OpenEXR)
-      target_compile_definitions(${t} PRIVATE USE_OPENEXR)
-    endforeach()
-  endif()
-  if(ENABLE_LIBJPEG_SUPPORT)
-    foreach(t IN LISTS TOOL_EXES)
-      target_include_directories(${t} PRIVATE Auxiliary)
-      target_link_libraries(${t} PRIVATE JPEG::JPEG)
-      target_compile_definitions(${t} PRIVATE USE_LIBJPEG)
-    endforeach()
-  endif()
-  if(ENABLE_LIBPNG_SUPPORT)
-    foreach(t IN LISTS TOOL_EXES)
-      target_include_directories(${t} PRIVATE Auxiliary)
-      target_link_libraries(${t} PRIVATE PNG::PNG)
-      target_compile_definitions(${t} PRIVATE USE_LIBPNG)
-    endforeach()
-  endif()
-  if(BUILD_XBOX_EXTS_SCARLETT OR BUILD_XBOX_EXTS_XBOXONE)
-    target_include_directories(texconv PRIVATE Auxiliary)
-    target_compile_definitions(texconv PRIVATE USE_XBOX_EXTS)
-    target_link_libraries(texconv PUBLIC $<TARGET_NAME_IF_EXISTS:Xbox::GDKX> $<TARGET_NAME_IF_EXISTS:Xbox::XDK>)
+# if(BUILD_TOOLS AND WIN32)
+#   if(ENABLE_OPENEXR_SUPPORT)
+#     foreach(t IN LISTS TOOL_EXES)
+#       target_include_directories(${t} PRIVATE Auxiliary)
+#       target_link_libraries(${t} PRIVATE OpenEXR::OpenEXR)
+#       target_compile_definitions(${t} PRIVATE USE_OPENEXR)
+#     endforeach()
+#   endif()
+#   if(ENABLE_LIBJPEG_SUPPORT)
+#     foreach(t IN LISTS TOOL_EXES)
+#       target_include_directories(${t} PRIVATE Auxiliary)
+#       target_link_libraries(${t} PRIVATE JPEG::JPEG)
+#       target_compile_definitions(${t} PRIVATE USE_LIBJPEG)
+#     endforeach()
+#   endif()
+#   if(ENABLE_LIBPNG_SUPPORT)
+#     foreach(t IN LISTS TOOL_EXES)
+#       target_include_directories(${t} PRIVATE Auxiliary)
+#       target_link_libraries(${t} PRIVATE PNG::PNG)
+#       target_compile_definitions(${t} PRIVATE USE_LIBPNG)
+#     endforeach()
+#   endif()
+#   if(BUILD_XBOX_EXTS_SCARLETT OR BUILD_XBOX_EXTS_XBOXONE)
+#     target_include_directories(texconv PRIVATE Auxiliary)
+#     target_compile_definitions(texconv PRIVATE USE_XBOX_EXTS)
+#     target_link_libraries(texconv PUBLIC $<TARGET_NAME_IF_EXISTS:Xbox::GDKX> $<TARGET_NAME_IF_EXISTS:Xbox::XDK>)
 
-    add_custom_command(TARGET texconv POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-        $<TARGET_RUNTIME_DLLS:texconv> $<TARGET_FILE_DIR:texconv>
-        COMMAND_EXPAND_LISTS
-        )
-  endif()
-endif()
+#     add_custom_command(TARGET texconv POST_BUILD
+#         COMMAND ${CMAKE_COMMAND} -E copy
+#         $<TARGET_RUNTIME_DLLS:texconv> $<TARGET_FILE_DIR:texconv>
+#         COMMAND_EXPAND_LISTS
+#         )
+#   endif()
+# endif()
 
-#--- DDSView sample
-if(BUILD_SAMPLE AND BUILD_DX11 AND WIN32)
-  list(APPEND TOOL_EXES ddsview)
+# #--- DDSView sample
+# if(BUILD_SAMPLE AND BUILD_DX11 AND WIN32)
+#   list(APPEND TOOL_EXES ddsview)
 
-  add_executable(ddsview WIN32
-    DDSView/ddsview.cpp
-    DDSView/ddsview.rc
-    ${COMPILED_SHADERS}/ddsview_ps1D.inc)
-  target_link_libraries(ddsview PRIVATE ${PROJECT_NAME} d3d11.lib ole32.lib)
-  source_group(ddsview REGULAR_EXPRESSION DDSView/*.*)
+#   add_executable(ddsview WIN32
+#     DDSView/ddsview.cpp
+#     DDSView/ddsview.rc
+#     ${COMPILED_SHADERS}/ddsview_ps1D.inc)
+#   target_link_libraries(ddsview PRIVATE ${PROJECT_NAME} d3d11.lib ole32.lib)
+#   source_group(ddsview REGULAR_EXPRESSION DDSView/*.*)
 
-  target_include_directories(ddsview PRIVATE ${COMPILED_SHADERS})
+#   target_include_directories(ddsview PRIVATE ${COMPILED_SHADERS})
 
-  if(NOT USE_PREBUILT_SHADERS)
-      add_custom_command(
-            OUTPUT "${COMPILED_SHADERS}/ddsview_ps1D.inc"
-            MAIN_DEPENDENCY "${PROJECT_SOURCE_DIR}/DDSView/hlsl.cmd"
-            DEPENDS "DDSView/ddsview.hlsl"
-            COMMENT "Generating HLSL shaders for DDSView..."
-            COMMAND ${CMAKE_COMMAND} -E env CompileShadersOutput="${COMPILED_SHADERS}" $<$<BOOL:${DIRECTX_FXC_TOOL}>:LegacyShaderCompiler=${DIRECTX_FXC_TOOL}> hlsl.cmd > "${COMPILED_SHADERS}/hlsl_ddsview.log"
-            WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/DDSView"
-            USES_TERMINAL)
-  endif()
-endif()
+#   if(NOT USE_PREBUILT_SHADERS)
+#       add_custom_command(
+#             OUTPUT "${COMPILED_SHADERS}/ddsview_ps1D.inc"
+#             MAIN_DEPENDENCY "${PROJECT_SOURCE_DIR}/DDSView/hlsl.cmd"
+#             DEPENDS "DDSView/ddsview.hlsl"
+#             COMMENT "Generating HLSL shaders for DDSView..."
+#             COMMAND ${CMAKE_COMMAND} -E env CompileShadersOutput="${COMPILED_SHADERS}" $<$<BOOL:${DIRECTX_FXC_TOOL}>:LegacyShaderCompiler=${DIRECTX_FXC_TOOL}> hlsl.cmd > "${COMPILED_SHADERS}/hlsl_ddsview.log"
+#             WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/DDSView"
+#             USES_TERMINAL)
+#   endif()
+# endif()
 
-if(directxmath_FOUND)
-  foreach(t IN LISTS TOOL_EXES)
-    target_link_libraries(${t} PRIVATE Microsoft::DirectXMath)
-  endforeach()
-endif()
+# if(directxmath_FOUND)
+#   foreach(t IN LISTS TOOL_EXES)
+#     target_link_libraries(${t} PRIVATE Microsoft::DirectXMath)
+#   endforeach()
+# endif()
 
-if(TOOL_EXES)
-  message(STATUS "Building tools: ${TOOL_EXES}")
-endif()
+# if(TOOL_EXES)
+#   message(STATUS "Building tools: ${TOOL_EXES}")
+# endif()
 
-if(MSVC)
-    foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
-      target_compile_options(${t} PRIVATE /Wall /GR-)
-    endforeach()
+# if(MSVC)
+#     foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
+#       target_compile_options(${t} PRIVATE /Wall /GR-)
+#     endforeach()
 
-    if(NO_WCHAR_T)
-      message(STATUS "Using non-native wchar_t as unsigned short")
-      foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
-        target_compile_options(${t} PRIVATE /Zc:wchar_t-)
-      endforeach()
-    endif()
-endif()
+#     if(NO_WCHAR_T)
+#       message(STATUS "Using non-native wchar_t as unsigned short")
+#       foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
+#         target_compile_options(${t} PRIVATE /Zc:wchar_t-)
+#       endforeach()
+#     endif()
+# endif()
 
-foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
-  target_compile_definitions(${t} PRIVATE ${COMPILER_DEFINES})
-  target_compile_options(${t} PRIVATE ${COMPILER_SWITCHES})
-  target_link_options(${t} PRIVATE ${LINKER_SWITCHES})
-endforeach()
+# foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
+#   target_compile_definitions(${t} PRIVATE ${COMPILER_DEFINES})
+#   target_compile_options(${t} PRIVATE ${COMPILER_SWITCHES})
+#   target_link_options(${t} PRIVATE ${LINKER_SWITCHES})
+# endforeach()
 
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|IntelLLVM")
-    set(WarningsLib -Wall -Wpedantic -Wextra)
+# if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|IntelLLVM")
+#     set(WarningsLib -Wall -Wpedantic -Wextra)
 
-    if((BUILD_XBOX_EXTS_XBOXONE OR BUILD_XBOX_EXTS_SCARLETT) AND WIN32)
-        list(APPEND WarningsLib -Wno-microsoft-enum-value -Wno-non-virtual-dtor -Wno-ignored-pragmas -Wno-deprecated-dynamic-exception-spec)
-        if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 13.0)
-            list(APPEND WarningsLib -Wno-reserved-identifier)
-        endif()
-    endif()
+#     if((BUILD_XBOX_EXTS_XBOXONE OR BUILD_XBOX_EXTS_SCARLETT) AND WIN32)
+#         list(APPEND WarningsLib -Wno-microsoft-enum-value -Wno-non-virtual-dtor -Wno-ignored-pragmas -Wno-deprecated-dynamic-exception-spec)
+#         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 13.0)
+#             list(APPEND WarningsLib -Wno-reserved-identifier)
+#         endif()
+#     endif()
 
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 16.0)
-        list(APPEND WarningsLib -Wno-unsafe-buffer-usage)
-    endif()
-    target_compile_options(${PROJECT_NAME} PRIVATE ${WarningsLib})
+#     if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 16.0)
+#         list(APPEND WarningsLib -Wno-unsafe-buffer-usage)
+#     endif()
+#     target_compile_options(${PROJECT_NAME} PRIVATE ${WarningsLib})
 
-    set(WarningsEXE ${WarningsLib}
-      -Wno-c++98-compat -Wno-c++98-compat-pedantic
-      -Wno-switch -Wno-switch-enum -Wno-switch-default -Wno-covered-switch-default -Wno-language-extension-token
-      -Wno-missing-prototypes -Wno-global-constructors -Wno-double-promotion -Wno-padded)
-    foreach(t IN LISTS TOOL_EXES)
-      target_compile_options(${t} PRIVATE ${WarningsEXE})
-    endforeach()
-elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
-      target_compile_options(${t} PRIVATE -Wno-ignored-attributes -Walloc-size-larger-than=4GB)
+#     set(WarningsEXE ${WarningsLib}
+#       -Wno-c++98-compat -Wno-c++98-compat-pedantic
+#       -Wno-switch -Wno-switch-enum -Wno-switch-default -Wno-covered-switch-default -Wno-language-extension-token
+#       -Wno-missing-prototypes -Wno-global-constructors -Wno-double-promotion -Wno-padded)
+#     foreach(t IN LISTS TOOL_EXES)
+#       target_compile_options(${t} PRIVATE ${WarningsEXE})
+#     endforeach()
+# elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+#     foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
+#       target_compile_options(${t} PRIVATE -Wno-ignored-attributes -Walloc-size-larger-than=4GB)
 
-      if(BUILD_SHARED_LIBS)
-        target_compile_options(${t} PRIVATE -Wno-attributes)
-      endif()
-    endforeach()
-elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+#       if(BUILD_SHARED_LIBS)
+#         target_compile_options(${t} PRIVATE -Wno-attributes)
+#       endif()
+#     endforeach()
+# elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
 
-    if((CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.37)
-       AND (NOT (${DIRECTX_ARCH} MATCHES "^arm"))
-       AND ((${DIRECTX_ARCH} STREQUAL "x64") OR (CMAKE_SIZEOF_VOID_P EQUAL 8)))
-       # Enable since DirectXTex library has a lot of large switch statements
-      target_compile_options(${PROJECT_NAME} PRIVATE /jumptablerdata)
-    endif()
+#     if((CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.37)
+#        AND (NOT (${DIRECTX_ARCH} MATCHES "^arm"))
+#        AND ((${DIRECTX_ARCH} STREQUAL "x64") OR (CMAKE_SIZEOF_VOID_P EQUAL 8)))
+#        # Enable since DirectXTex library has a lot of large switch statements
+#       target_compile_options(${PROJECT_NAME} PRIVATE /jumptablerdata)
+#     endif()
 
-    if(ENABLE_CODE_ANALYSIS)
-      message(STATUS "Building with Code Analysis (PREFIX)")
-      foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
-        target_compile_options(${t} PRIVATE /analyze /WX)
-      endforeach()
-    endif()
+#     if(ENABLE_CODE_ANALYSIS)
+#       message(STATUS "Building with Code Analysis (PREFIX)")
+#       foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
+#         target_compile_options(${t} PRIVATE /analyze /WX)
+#       endforeach()
+#     endif()
 
-    if(ENABLE_CODE_PROFILING)
-      message(STATUS "Building with /PROFILE")
-      foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
-        target_link_options(${t} PRIVATE /profile)
-      endforeach()
-    endif()
+#     if(ENABLE_CODE_PROFILING)
+#       message(STATUS "Building with /PROFILE")
+#       foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
+#         target_link_options(${t} PRIVATE /profile)
+#       endforeach()
+#     endif()
 
-    if(ENABLE_SPECTRE_MITIGATION
-       AND (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.13)
-       AND (NOT ENABLE_OPENEXR_SUPPORT)
-       AND (NOT WINDOWS_STORE))
-        message(STATUS "Building Spectre-mitigated libraries")
-        foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
-          target_compile_options(${t} PRIVATE "/Qspectre")
-        endforeach()
-    endif()
+#     if(ENABLE_SPECTRE_MITIGATION
+#        AND (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.13)
+#        AND (NOT ENABLE_OPENEXR_SUPPORT)
+#        AND (NOT WINDOWS_STORE))
+#         message(STATUS "Building Spectre-mitigated libraries")
+#         foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
+#           target_compile_options(${t} PRIVATE "/Qspectre")
+#         endforeach()
+#     endif()
 
-   if((CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.26)
-      AND BUILD_XBOX_EXTS_XBOXONE)
-        foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
-          target_compile_options(${t} PRIVATE /wd5104 /wd5204)
-        endforeach()
-    endif()
+#    if((CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.26)
+#       AND BUILD_XBOX_EXTS_XBOXONE)
+#         foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
+#           target_compile_options(${t} PRIVATE /wd5104 /wd5204)
+#         endforeach()
+#     endif()
 
-    set(WarningsEXE /wd4061 /wd4062 /wd4365 /wd4514 /wd4571 /wd4625 /wd4626 /wd4627 /wd4668 /wd4710 /wd4711 /wd4751 /wd4774 /wd4820 /wd5026 /wd5027 /wd5039 /wd5045 /wd5219)
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.34)
-      list(APPEND WarningsEXE /wd5262 /wd5264)
-    endif()
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.50)
-      list(APPEND WarningsEXE /wd4865)
-    endif()
-    foreach(t IN LISTS TOOL_EXES)
-      target_compile_options(${t} PRIVATE ${WarningsEXE})
-    endforeach()
+#     set(WarningsEXE /wd4061 /wd4062 /wd4365 /wd4514 /wd4571 /wd4625 /wd4626 /wd4627 /wd4668 /wd4710 /wd4711 /wd4751 /wd4774 /wd4820 /wd5026 /wd5027 /wd5039 /wd5045 /wd5219)
+#     if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.34)
+#       list(APPEND WarningsEXE /wd5262 /wd5264)
+#     endif()
+#     if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.50)
+#       list(APPEND WarningsEXE /wd4865)
+#     endif()
+#     foreach(t IN LISTS TOOL_EXES)
+#       target_compile_options(${t} PRIVATE ${WarningsEXE})
+#     endforeach()
 
-    if(BUILD_FUZZING AND (NOT WINDOWS_STORE))
-      # Prevent fuzzing builds (which is otherwise configured as a Release mode) from disabling assertions
-      string(REPLACE "/DNDEBUG" "" CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
-      string(REPLACE "/DNDEBUG" "" CMAKE_CXX_FLAGS_RELWITHDEBINFO ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
+#     if(BUILD_FUZZING AND (NOT WINDOWS_STORE))
+#       # Prevent fuzzing builds (which is otherwise configured as a Release mode) from disabling assertions
+#       string(REPLACE "/DNDEBUG" "" CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
+#       string(REPLACE "/DNDEBUG" "" CMAKE_CXX_FLAGS_RELWITHDEBINFO ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
 
-      if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.32)
-        foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
-          target_compile_options(${t} PRIVATE ${ASAN_SWITCHES})
-          target_link_libraries(${t} PRIVATE ${ASAN_LIBS})
-        endforeach()
-      endif()
-    endif()
-endif()
+#       if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.32)
+#         foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
+#           target_compile_options(${t} PRIVATE ${ASAN_SWITCHES})
+#           target_link_libraries(${t} PRIVATE ${ASAN_LIBS})
+#         endforeach()
+#       endif()
+#     endif()
+# endif()
 
-if(WIN32)
-    if(XBOX_CONSOLE_TARGET STREQUAL "durango")
-        set(WINVER 0x0602)
-    elseif(BUILD_DX12 OR (DIRECTX_ARCH MATCHES "^arm64"))
-        message(STATUS "Building with DirectX 12 Runtime support")
-        set(WINVER 0x0A00)
-    else()
-        message(STATUS "Building for Windows 8.1")
-        set(WINVER 0x0603)
-    endif()
+# if(WIN32)
+#     if(XBOX_CONSOLE_TARGET STREQUAL "durango")
+#         set(WINVER 0x0602)
+#     elseif(BUILD_DX12 OR (DIRECTX_ARCH MATCHES "^arm64"))
+#         message(STATUS "Building with DirectX 12 Runtime support")
+#         set(WINVER 0x0A00)
+#     else()
+#         message(STATUS "Building for Windows 8.1")
+#         set(WINVER 0x0603)
+#     endif()
 
-    foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
-      target_compile_definitions(${t} PRIVATE _WIN32_WINNT=${WINVER})
-    endforeach()
+#     foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
+#       target_compile_definitions(${t} PRIVATE _WIN32_WINNT=${WINVER})
+#     endforeach()
 
-    if(DISABLE_MSVC_ITERATOR_DEBUGGING)
-      foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
-        target_compile_definitions(${t} PRIVATE _ITERATOR_DEBUG_LEVEL=0)
-      endforeach()
-    endif()
-endif()
+#     if(DISABLE_MSVC_ITERATOR_DEBUGGING)
+#       foreach(t IN LISTS TOOL_EXES ITEMS ${PROJECT_NAME})
+#         target_compile_definitions(${t} PRIVATE _ITERATOR_DEBUG_LEVEL=0)
+#       endforeach()
+#     endif()
+# endif()
 
-if(BUILD_TOOLS AND BUILD_DX11 AND WIN32 AND (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR))
-    set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT texconv)
-endif()
+# if(BUILD_TOOLS AND BUILD_DX11 AND WIN32 AND (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR))
+#     set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT texconv)
+# endif()
 
-if(BUILD_TOOLS AND (NOT VCPKG_TOOLCHAIN))
-    foreach(t IN LISTS TOOL_EXES)
-      install(TARGETS ${t} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-    endforeach()
-endif()
+# if(BUILD_TOOLS AND (NOT VCPKG_TOOLCHAIN))
+#     foreach(t IN LISTS TOOL_EXES)
+#       install(TARGETS ${t} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+#     endforeach()
+# endif()
 
-#--- Test suite
-if(WIN32 AND (NOT WINDOWS_STORE) AND (NOT (DEFINED XBOX_CONSOLE_TARGET)))
-    include(CTest)
-    if(BUILD_TESTING AND (EXISTS "${CMAKE_CURRENT_LIST_DIR}/Tests/CMakeLists.txt"))
-        enable_testing()
-        add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/Tests)
+# #--- Test suite
+# if(WIN32 AND (NOT WINDOWS_STORE) AND (NOT (DEFINED XBOX_CONSOLE_TARGET)))
+#     include(CTest)
+#     if(BUILD_TESTING AND (EXISTS "${CMAKE_CURRENT_LIST_DIR}/Tests/CMakeLists.txt"))
+#         enable_testing()
+#         add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/Tests)
 
-        if(ENABLE_CODE_COVERAGE AND (DEFINED COV_COMPILER_SWITCHES))
-          target_compile_options(${PROJECT_NAME} PRIVATE ${COV_COMPILER_SWITCHES})
-        endif()
-    elseif(BUILD_FUZZING AND (EXISTS "${CMAKE_CURRENT_LIST_DIR}/Tests/fuzzloaders/CMakeLists.txt"))
-        message(STATUS "Building for fuzzing")
-        add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/Tests/fuzzloaders)
-    endif()
-endif()
+#         if(ENABLE_CODE_COVERAGE AND (DEFINED COV_COMPILER_SWITCHES))
+#           target_compile_options(${PROJECT_NAME} PRIVATE ${COV_COMPILER_SWITCHES})
+#         endif()
+#     elseif(BUILD_FUZZING AND (EXISTS "${CMAKE_CURRENT_LIST_DIR}/Tests/fuzzloaders/CMakeLists.txt"))
+#         message(STATUS "Building for fuzzing")
+#         add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/Tests/fuzzloaders)
+#     endif()
+# endif()
